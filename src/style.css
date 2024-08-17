@@ -122,6 +122,7 @@ main {
 
 /* all messages in the inbound group */
 .message-in {
+  align-self: flex-start;
   margin-right: 5rem;
   .chat-message-title {
     margin-left: 2.75rem;
