@@ -6,6 +6,8 @@
   --border: lightgrey;
   --text: black;
   --text-grey: grey;
+  --message-in: #eee;
+  --message-out: lightblue;
 }
 
 *,
@@ -42,11 +44,9 @@ body {
 
 main {
   position: relative;
-  width: 80vw;
-  overflow: hidden;
   display: flex;
-  border: 1px solid var(--border);
-  border-radius: 0.5rem;
+  width: 100%;
+  overflow: hidden;
 }
 
 .container {
@@ -54,6 +54,7 @@ main {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 100%;
 }
 
 .container-title {
@@ -65,18 +66,137 @@ main {
 }
 
 .container-body {
-  padding: 1rem;
   flex-grow: 1;
   overflow: hidden;
 }
 
 .chat-container {
   height: 100%;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .chat-messages {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.25rem;
   overflow-y: scroll;
   scrollbar-gutter: stable;
+  padding: 1rem;
+}
+
+/* all messages in the chat */
+.chat-message {
+  display: flex;
+  flex-direction: column;
+  .chat-message-title {
+    display: none;
+    font-size: 0.85rem;
+    color: var(--text-grey);
+  }
+  .chat-message-group {
+    display: flex;
+    gap: 0.25rem;
+    align-items: start;
+    .chat-message-avatar {
+      display: none;
+    }
+    .chat-message-content {
+      padding: 0.5rem;
+      min-height: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      .chat-message-image {
+        display: flex;
+        img {
+          max-width: 18rem;
+          border-radius: 0.5rem;
+        }
+        + .chat-message-text {
+          max-width: 18rem;
+        }
+      }
+      .chat-message-text {
+        overflow-wrap: anywhere;
+      }
+    }
+  }
+}
+
+/* all messages in the inbound group */
+.message-in {
+  .chat-message-title {
+    margin-left: 2.75rem;
+    display: none;
+  }
+  .chat-message-content {
+    background-color: var(--message-in);
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+  }
+}
+/* the first message in the inbound group */
+.message-in:first-child,
+.message-out + :not(.message-out) {
+  .chat-message-content {
+    border-top-left-radius: 0.5rem;
+  }
+  .chat-message-title {
+    /* display: block; */
+    display: none;
+  }
+  .chat-message-avatar {
+    /* visibility: visible; */
+    display: none;
+  }
+}
+/* the last message in the inbound group */
+.message-in:last-child,
+.message-in:has(+ :not(.message-in)) {
+  .chat-message-content {
+    border-bottom-left-radius: 0.5rem;
+  }
+}
+/* all messages in the outbound group */
+.message-out {
+  align-self: flex-end;
+  .chat-message-title {
+    margin-right: 2.75rem;
+    text-align: end;
+    display: none;
+  }
+  .chat-message-group {
+    flex-direction: row-reverse;
+  }
+  .chat-message-content {
+    background-color: var(--message-out);
+    border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
+  }
+}
+/* the first message in the outbound group */
+.message-out:first-child,
+.message-in + :not(.message-in) {
+  .chat-message-content {
+    border-top-right-radius: 0.5rem;
+  }
+  .chat-message-title {
+    /* display: block; */
+    display: none;
+  }
+  .chat-message-avatar {
+    display: none;
+    /* visibility: visible; */
+  }
+}
+/* the last message in the outbound group */
+.message-out:last-child,
+.message-out:has(+ :not(.message-out)) {
+  .chat-message-content {
+    border-bottom-right-radius: 0.5rem;
+  }
 }
