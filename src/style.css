@@ -16,6 +16,20 @@
   padding: 0;
 }
 
+/* Custom Scrollbar: START */
+*::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 1rem;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--highlight);
+  border-radius: 0.25rem;
+}
+*:hover::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+}
+/* Custom Scrollbar: END */
+
 body {
   display: flex;
   flex-direction: column;
@@ -64,4 +78,5 @@ main {
 .chat-messages {
   height: 100%;
   overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
