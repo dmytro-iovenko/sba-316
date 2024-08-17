@@ -66,7 +66,7 @@ const messages = [
 const chatMessages = document.getElementById("chat-messages");
 
 // A builder function to create message in the chat
-function createMessage(message = {}) {
+const createMessage = (message = {}) => {
   // Creating a DocumentFragment
   const frag = document.createDocumentFragment();
   const chat = frag.appendChild(document.createElement("div"));
@@ -90,9 +90,19 @@ function createMessage(message = {}) {
     text.textContent = message.text;
   }
   return frag;
-}
+};
 
 // Loop through chat messages to display them
 messages.forEach((message) => {
   chatMessages.appendChild(createMessage(message));
 });
+
+// A function to scroll content down
+const scrollDown = (content) => {
+  if (content.scrollHeight > content.clientHeight) {
+    content.scrollTop = content.scrollHeight;
+  }
+};
+
+// Scroll Chat Messages down
+scrollDown(chatMessages);
