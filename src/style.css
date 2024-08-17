@@ -129,6 +129,7 @@ main {
 
 /* all messages in the inbound group */
 .message-in {
+  margin-right: 5rem;
   .chat-message-title {
     margin-left: 2.75rem;
     display: none;
@@ -158,12 +159,24 @@ main {
 .message-in:last-child,
 .message-in:has(+ :not(.message-in)) {
   .chat-message-content {
-    border-bottom-left-radius: 0.5rem;
+    position: relative;
+    /* border-bottom-left-radius: 0.5rem; */
+  }
+  .chat-message-content:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: -1rem;
+    height: 0.75rem;
+    width: 1rem;
+    border-bottom-right-radius: 1rem;
+    box-shadow: 0.5rem 0 0 0 var(--message-in);
   }
 }
 /* all messages in the outbound group */
 .message-out {
   align-self: flex-end;
+  margin-left: 5rem;
   .chat-message-title {
     margin-right: 2.75rem;
     text-align: end;
@@ -197,6 +210,17 @@ main {
 .message-out:last-child,
 .message-out:has(+ :not(.message-out)) {
   .chat-message-content {
-    border-bottom-right-radius: 0.5rem;
+    position: relative;
+    /* border-bottom-right-radius: 0.5rem; */
+  }
+  .chat-message-content:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    right: -1rem;
+    height: 0.75rem;
+    width: 1rem;
+    border-bottom-left-radius: 1rem;
+    box-shadow: -0.5rem 0 0 0 var(--message-out);
   }
 }
