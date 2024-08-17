@@ -1,3 +1,13 @@
+:root {
+  --primary: #227093;
+  --secondary: #ff5252;
+  --background: white;
+  --highlight: #eee;
+  --border: lightgrey;
+  --text: black;
+  --text-grey: grey;
+}
+
 *,
 *::before,
 *::after {
@@ -17,8 +27,41 @@ body {
 }
 
 main {
-    position: relative;
-    max-height: 50vh;
-    width: 300px;
-    overflow-y: scroll;
-}  
+  position: relative;
+  width: 80vw;
+  overflow: hidden;
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.container-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+}
+
+.container-body {
+  padding: 1rem;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.chat-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+.chat-messages {
+  height: 100%;
+  overflow-y: scroll;
+}
