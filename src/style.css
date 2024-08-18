@@ -232,13 +232,21 @@ main {
     .grow-wrap:has(.message-area-text:focus) {
       box-shadow: 0 0 10px var(--border);
     }
-    .message-area-btn:hover {
+    .message-area-btn:hover:enabled {
       /* fill: var(--primary); */
       /* filter: drop-shadow( 0 0 0.25rem var(--border)); */
       background-color: var(--highlight);
       box-shadow: 0 0 10px var(--border);
     }
+    .message-area-btn:disabled {
+      fill: var(--border);
+    }
+    .message-area-btn:enabled {
+      cursor: pointer;
+    }
     .message-area-btn {
+      background-color: var(--background);
+      border: none;
       border-radius: 0.5rem;
       height: 2.5rem;
       width: 3rem;
@@ -248,7 +256,7 @@ main {
       justify-content: center;
       align-items: center;
     }
-    .emoji-btn:hover ~ .message-emoji,
+    #emoji-btn:hover ~ .message-emoji,
     .message-emoji:hover {
       visibility: visible;
       height: 12rem;
