@@ -1,9 +1,9 @@
 ## Live Chat Client
-This project is a part of [Live Chat App|https://github.com/dmytro-iovenko/live-chat]. The client app allows users to initiate chat sessions with representatives, who can respond in real-time. This functionality is ideal for businesses looking to offer enhanced customer support or for services that require real-time interaction.
+This project is a part of [Live Chat App](https://github.com/dmytro-iovenko/live-chat). This small app allows users to initiate chat sessions with representatives, who can respond in real-time. This functionality is ideal for businesses looking to offer enhanced customer support or for services that require real-time interaction.
 
 ### Built With
-- Flexbox, Grid
-- Vanilla JavaScript
+- Flexbox
+- JavaScript
 
 ### Objectives
 - Use DOM properties, methods, and techniques to create a web application that provides a dynamic user experience.
