@@ -64,6 +64,7 @@ const messages = [
 ];
 
 const chatMessages = document.getElementById("chat-messages");
+const messageText = document.getElementById("message-text");
 
 // A builder function to create message in the chat
 const createMessage = (message = {}) => {
@@ -107,11 +108,10 @@ const scrollDown = (content) => {
 scrollDown(chatMessages);
 
 // Set up message textarea to grow automatically
-const grower = document.querySelector(".grow-wrap");
-const textarea = grower.querySelector("textarea");
-textarea.addEventListener("input", () => {
-  grower.dataset.replicatedValue = textarea.value;
-  if (countLines(textarea) > 1) {
+messageText.addEventListener("input", () => {
+  const grower = messageText.parentNode;
+  grower.dataset.replicatedValue = messageText.value;
+  if (countLines(messageText) > 1) {
     grower.classList.remove("fixed");
   } else if (!grower.classList.contains("fixed")) {
     grower.classList.add("fixed");
@@ -159,5 +159,14 @@ textarea.addEventListener("input", () => {
     if (result == 0) result = 1;
     textarea.parentNode.removeChild(clone);
     return result;
+  }
+});
+
+// Insert emoji to the message
+const emoji = document.querySelector(".message-emoji .tab-content");
+emoji.addEventListener("click", (event) => {
+  if (messageText && event.target.classList.contains("emoji-icon")) {
+    const [start, end] = [messageText.selectionStart, messageText.selectionEnd];
+    messageText.setRangeText(event.target.textContent, start, end, "select");
   }
 });
