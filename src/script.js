@@ -66,14 +66,9 @@ const messages = [
 const storage = window.localStorage;
 const chatContainer = document.querySelector(".chat-container");
 
-const createRegistrationForm = () => {
-  // Using an HTML template clone
-  const registrationTemplate = document.getElementById("registration-template");
-  return registrationTemplate.content.firstElementChild.cloneNode(true);
-};
-// Create Registration Form using template
-const registrationContainer = createRegistrationForm();
-chatContainer.prepend(registrationContainer);
+// Create Registration Form using HTML template
+const registrationContainer = createContainer("registration-template");
+chatContainer.append(registrationContainer);
 
 // Handle Registration Form submission
 const registrationForm = document.getElementById("registration");
@@ -187,15 +182,11 @@ function startChat(name) {
   chatMessages.classList.add("chat-messages");
   chatContainer.appendChild(chatMessages);
 
-  const createMessageContainer = () => {
-    // Using an HTML template clone
-    const template = document.getElementById("message-container-template");
-    return template.content.firstElementChild.cloneNode(true);
-  };
-  // Create Registration Form using template
-  const messageContainer = createMessageContainer();
+  // Create Message Container using HTML template
+  const messageContainer = createContainer("message-container-template");
   chatContainer.appendChild(messageContainer);
 
+  // Get essential Message Container's elements
   const messageForm = messageContainer.querySelector("#message-form");
   const messageText = messageContainer.querySelector("#message-text");
   const sendButton = messageContainer.querySelector("#send-btn");
@@ -350,4 +341,11 @@ function startChat(name) {
       messageForm.reset();
     }
   });
+}
+
+// A builder function to create container using HTML template
+function createContainer(name) {
+  // Using an HTML template clone
+  const template = document.getElementById(name);
+  return template.content.firstElementChild.cloneNode(true);
 }
