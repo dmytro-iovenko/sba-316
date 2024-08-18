@@ -78,7 +78,6 @@ main {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
 }
 
 .chat-messages {
@@ -218,7 +217,7 @@ main {
   }
 }
 
-.container-footer {
+.message-container {
   background-color: var(--white);
   .message-area {
     position: relative;
@@ -380,6 +379,10 @@ main {
 /* Grow Textarea: END  */
 
 .form-container {
+  padding: 1rem;
+}
+
+.form-container > div {
   background: var(--white);
   display: flex;
   flex-direction: column;
@@ -387,6 +390,7 @@ main {
   border-radius: 0.5rem;
   user-select: none;
   margin-bottom: 1rem;
+
 }
 .form-container p {
   padding: 0.5rem 1rem;

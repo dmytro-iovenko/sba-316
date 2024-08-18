@@ -63,6 +63,25 @@ const messages = [
   },
 ];
 
+const chatContainer = document.querySelector(".chat-container");
+
+const createRegistrationForm = (parent = document) => {
+  // Using an HTML template clone
+  const registrationTemplate = document.getElementById("registration-template");
+  const clone = registrationTemplate.content.cloneNode(true);
+  const form = clone.getElementById("registration");
+  parent.prepend(clone);
+  return form;
+};
+// Create Registration Form using template
+const registrationForm = createRegistrationForm(chatContainer);
+// Handle Registration Form submission
+registrationForm.addEventListener("submit", handleRegistration);
+
+function handleRegistration(event) {
+  console.log("OK");
+}
+
 const chatMessages = document.getElementById("chat-messages");
 const messageForm = document.getElementById("message-form");
 const messageText = document.getElementById("message-text");
@@ -97,7 +116,7 @@ const createMessage = (message = {}) => {
 
 // Loop through chat messages to display them
 messages.forEach((message) => {
-  chatMessages.appendChild(createMessage(message));
+  //   chatMessages.appendChild(createMessage(message));
 });
 
 // A function to scroll content down
