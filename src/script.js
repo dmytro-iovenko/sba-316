@@ -194,8 +194,8 @@ messageForm.addEventListener("submit", (event) => {
     is_outgoing: true,
   };
   chatMessages.appendChild(createMessage(message));
-  messageForm.reset();
   scrollDown(chatMessages);
+  resetForm();
 
   // Return encoded (safe) text in html format
   function encodeHTML(text) {
@@ -204,5 +204,14 @@ messageForm.addEventListener("submit", (event) => {
       (i) => "&#" + i.charCodeAt(0) + ";"
     );
     return encoded.split(/\r?\n/).join("<br>");
+  }
+
+  // Reset form and resize message textarea
+  function resetForm() {
+    const grower = messageText.parentNode;
+    if (!grower.classList.contains("fixed")) {
+      grower.classList.add("fixed");
+    }
+    messageForm.reset();
   }
 });
