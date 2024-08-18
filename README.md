@@ -1,5 +1,9 @@
-## SBA 316: The Document Object Model
-This assessment measures your understanding of the Document Object Model (DOM) and your capability to implement its features in a practical manner. You have creative freedom in the topic, material, and purpose of the web application you will be developing, so have fun with it! However, remember to plan the scope of your project to the timeline you have been given.
+## Live Chat Client
+This project is a part of [Live Chat App|https://github.com/dmytro-iovenko/live-chat]. The client app allows users to initiate chat sessions with representatives, who can respond in real-time. This functionality is ideal for businesses looking to offer enhanced customer support or for services that require real-time interaction.
+
+### Built With
+- Flexbox, Grid
+- Vanilla JavaScript
 
 ### Objectives
 - Use DOM properties, methods, and techniques to create a web application that provides a dynamic user experience.
