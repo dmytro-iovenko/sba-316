@@ -12,7 +12,22 @@
         <div class="container-title">Tina Cornell</div>
         <div class="container-body">
           <div class="chat-container">
-            <div id="chat-messages" class="chat-messages"></div>
+            <div id="chat-messages" class="chat-messages">
+              <!-- Container for entire form. -->
+              <div class="form-container">
+                <div>
+                  <p>Please fill in the form below before starting the chat.</p>
+                  <!-- Registration Form -->
+                  <form id="registration">
+                    <label for="username">Name:</label>
+                    <input name="username" type="text" />
+                    <label for="email">E-mail:</label>
+                    <input name="email" type="text" />
+                    <button type="submit">Start the chat</button>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="container-footer popup">
@@ -59,7 +74,12 @@
                   ></path>
                 </svg>
               </a>
-              <button id="send-btn" class="message-area-btn" type="submit" disabled>
+              <button
+                id="send-btn"
+                class="message-area-btn"
+                type="submit"
+                disabled
+              >
                 <svg
                   focusable="false"
                   aria-hidden="true"
