@@ -183,10 +183,22 @@ function startChat(name) {
     throw new Error("That chat does not exist.");
   }
 
-  const chatMessages = document.getElementById("chat-messages");
-  const messageForm = document.getElementById("message-form");
-  const messageText = document.getElementById("message-text");
-  const sendButton = document.getElementById("send-btn");
+  const chatMessages = document.createElement("div");
+  chatMessages.classList.add("chat-messages");
+  chatContainer.appendChild(chatMessages);
+
+  const createMessageContainer = () => {
+    // Using an HTML template clone
+    const template = document.getElementById("message-container-template");
+    return template.content.firstElementChild.cloneNode(true);
+  };
+  // Create Registration Form using template
+  const messageContainer = createMessageContainer();
+  chatContainer.appendChild(messageContainer);
+
+  const messageForm = messageContainer.querySelector("#message-form");
+  const messageText = messageContainer.querySelector("#message-text");
+  const sendButton = messageContainer.querySelector("#send-btn");
 
   // A builder function to create message in the chat
   const createMessage = (message = {}) => {
