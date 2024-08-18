@@ -66,17 +66,17 @@ const messages = [
 const storage = window.localStorage;
 const chatContainer = document.querySelector(".chat-container");
 
-const createRegistrationForm = (parent = document) => {
+const createRegistrationForm = () => {
   // Using an HTML template clone
   const registrationTemplate = document.getElementById("registration-template");
-  const clone = registrationTemplate.content.cloneNode(true);
-  const form = clone.getElementById("registration");
-  parent.prepend(clone);
-  return form;
+  return registrationTemplate.content.firstElementChild.cloneNode(true);
 };
 // Create Registration Form using template
-const registrationForm = createRegistrationForm(chatContainer);
+const registrationContainer = createRegistrationForm();
+chatContainer.prepend(registrationContainer);
+
 // Handle Registration Form submission
+const registrationForm = document.getElementById("registration");
 registrationForm.addEventListener("submit", handleRegistration);
 
 function handleRegistration(event) {
@@ -107,6 +107,10 @@ function handleRegistration(event) {
     );
     // Clear all form fields after successful submission
     registrationForm.reset();
+    // Remove Registration Form
+    chatContainer.removeChild(registrationContainer);
+    // Start Chat
+    startChat(username);
     console.log("OK");
   } catch (err) {
     displayError(err.message);
@@ -172,155 +176,166 @@ function handleRegistration(event) {
   }
 }
 
-const chatMessages = document.getElementById("chat-messages");
-const messageForm = document.getElementById("message-form");
-const messageText = document.getElementById("message-text");
-const sendButton = document.getElementById("send-btn");
-
-// A builder function to create message in the chat
-const createMessage = (message = {}) => {
-  // Creating a DocumentFragment
-  const frag = document.createDocumentFragment();
-  const chat = frag.appendChild(document.createElement("div"));
-  chat.classList.add("chat-message");
-  chat.classList.add(message.is_outgoing ? "message-out" : "message-in");
-  const title = chat.appendChild(document.createElement("div"));
-  title.classList.add("chat-message-title");
-  title.textContent = message.title;
-  const content = chat.appendChild(document.createElement("div"));
-  content.classList.add("chat-message-content");
-  if (message.image) {
-    const image = content.appendChild(document.createElement("div"));
-    image.classList.add("chat-message-image");
-    const img = image.appendChild(document.createElement("img"));
-    img.setAttribute("src", message.image.src);
-    img.setAttribute("alt", message.image.alt);
+function startChat(name) {
+  const chat = storage.getItem(name.toLowerCase());
+  // The chat must exist (within localStorage)
+  if (!chat) {
+    throw new Error("That chat does not exist.");
   }
-  if (message.text) {
-    const text = content.appendChild(document.createElement("div"));
-    text.classList.add("chat-message-text");
-    text.innerHTML = message.text;
-  }
-  return frag;
-};
 
-// Loop through chat messages to display them
-messages.forEach((message) => {
-  //   chatMessages.appendChild(createMessage(message));
-});
+  const chatMessages = document.getElementById("chat-messages");
+  const messageForm = document.getElementById("message-form");
+  const messageText = document.getElementById("message-text");
+  const sendButton = document.getElementById("send-btn");
 
-// A function to scroll content down
-const scrollDown = (content) => {
-  if (content.scrollHeight > content.clientHeight) {
-    content.scrollTop = content.scrollHeight;
-  }
-};
-// Scroll Chat Messages down
-scrollDown(chatMessages);
-
-// Set up message textarea to grow automatically
-messageText.addEventListener("input", () => {
-  const grower = messageText.parentNode;
-  grower.dataset.replicatedValue = messageText.value;
-  if (countLines(messageText) > 1) {
-    grower.classList.remove("fixed");
-  } else if (!grower.classList.contains("fixed")) {
-    grower.classList.add("fixed");
-  }
-  // https://stackoverflow.com/a/45252226
-  // Function to returns the number of lines in a textarea,
-  // including wrapped lines.
-  function countLines(textarea) {
-    let clone = textarea.cloneNode();
-    clone.style.border = "none";
-    clone.style.height = "0";
-    clone.style.overflow = "hidden";
-    clone.style.padding = "0";
-    clone.style.position = "absolute";
-    clone.style.left = "0";
-    clone.style.top = "0";
-    clone.style.zIndex = "-1";
-    clone.style.visibility = "hidden";
-
-    textarea.parentNode.appendChild(clone);
-
-    let cs = window.getComputedStyle(textarea);
-    let pl = parseInt(cs.paddingLeft);
-    let pr = parseInt(cs.paddingRight);
-    let lh = parseInt(cs.lineHeight);
-
-    // [cs.lineHeight] may return 'normal', which means line height = font size.
-    if (isNaN(lh)) lh = parseInt(cs.fontSize);
-
-    // Copy content width.
-    clone.style.width = textarea.clientWidth - pl - pr + "px";
-
-    // Copy text properties.
-    clone.style.font = cs.font;
-    clone.style.letterSpacing = cs.letterSpacing;
-    clone.style.whiteSpace = cs.whiteSpace;
-    clone.style.wordBreak = cs.wordBreak;
-    clone.style.wordSpacing = cs.wordSpacing;
-    clone.style.wordWrap = cs.wordWrap;
-
-    // Copy value.
-    clone.value = textarea.value;
-
-    let result = Math.floor(clone.scrollHeight / lh);
-    if (result == 0) result = 1;
-    textarea.parentNode.removeChild(clone);
-    return result;
-  }
-});
-
-// Insert emoji to the message
-const emoji = document.querySelector(".message-emoji .tab-content");
-emoji.addEventListener("click", (event) => {
-  if (messageText && event.target.classList.contains("emoji-icon")) {
-    const [start, end] = [messageText.selectionStart, messageText.selectionEnd];
-    messageText.setRangeText(event.target.textContent, start, end, "select");
-    if (sendButton.disabled) sendButton.disabled = false;
-  }
-});
-
-// Enable/Disable Send button
-messageText.addEventListener("input", (event) => {
-  if (sendButton.disabled && event.currentTarget.value !== "") {
-    sendButton.disabled = false;
-  } else if (event.currentTarget.value === "") {
-    sendButton.disabled = true;
-  }
-});
-
-// Handle sending new message
-messageForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  if (messageText.value === "") return;
-  const message = {
-    id: Date.now(),
-    title: "Mary Sue",
-    text: encodeHTML(messageText.value),
-    is_outgoing: true,
+  // A builder function to create message in the chat
+  const createMessage = (message = {}) => {
+    // Creating a DocumentFragment
+    const frag = document.createDocumentFragment();
+    const chat = frag.appendChild(document.createElement("div"));
+    chat.classList.add("chat-message");
+    chat.classList.add(message.is_outgoing ? "message-out" : "message-in");
+    const title = chat.appendChild(document.createElement("div"));
+    title.classList.add("chat-message-title");
+    title.textContent = message.title;
+    const content = chat.appendChild(document.createElement("div"));
+    content.classList.add("chat-message-content");
+    if (message.image) {
+      const image = content.appendChild(document.createElement("div"));
+      image.classList.add("chat-message-image");
+      const img = image.appendChild(document.createElement("img"));
+      img.setAttribute("src", message.image.src);
+      img.setAttribute("alt", message.image.alt);
+    }
+    if (message.text) {
+      const text = content.appendChild(document.createElement("div"));
+      text.classList.add("chat-message-text");
+      text.innerHTML = message.text;
+    }
+    return frag;
   };
-  chatMessages.appendChild(createMessage(message));
+
+  // Loop through chat messages to display them
+  messages.forEach((message) => {
+    // chatMessages.appendChild(createMessage(message));
+  });
+
+  // A function to scroll content down
+  const scrollDown = (content) => {
+    if (content.scrollHeight > content.clientHeight) {
+      content.scrollTop = content.scrollHeight;
+    }
+  };
+  // Scroll Chat Messages down
   scrollDown(chatMessages);
-  resetForm();
 
-  // Return encoded (safe) text in html format
-  function encodeHTML(text) {
-    const encoded = text.replace(
-      /[\u00A0-\u9999<>\&]/g,
-      (i) => "&#" + i.charCodeAt(0) + ";"
-    );
-    return encoded.split(/\r?\n/).join("<br>");
-  }
-
-  // Reset form and resize message textarea
-  function resetForm() {
+  // Set up message textarea to grow automatically
+  messageText.addEventListener("input", () => {
     const grower = messageText.parentNode;
-    if (!grower.classList.contains("fixed")) {
+    grower.dataset.replicatedValue = messageText.value;
+    if (countLines(messageText) > 1) {
+      grower.classList.remove("fixed");
+    } else if (!grower.classList.contains("fixed")) {
       grower.classList.add("fixed");
     }
-    messageForm.reset();
-  }
-});
+    // https://stackoverflow.com/a/45252226
+    // Function to returns the number of lines in a textarea,
+    // including wrapped lines.
+    function countLines(textarea) {
+      let clone = textarea.cloneNode();
+      clone.style.border = "none";
+      clone.style.height = "0";
+      clone.style.overflow = "hidden";
+      clone.style.padding = "0";
+      clone.style.position = "absolute";
+      clone.style.left = "0";
+      clone.style.top = "0";
+      clone.style.zIndex = "-1";
+      clone.style.visibility = "hidden";
+
+      textarea.parentNode.appendChild(clone);
+
+      let cs = window.getComputedStyle(textarea);
+      let pl = parseInt(cs.paddingLeft);
+      let pr = parseInt(cs.paddingRight);
+      let lh = parseInt(cs.lineHeight);
+
+      // [cs.lineHeight] may return 'normal', which means line height = font size.
+      if (isNaN(lh)) lh = parseInt(cs.fontSize);
+
+      // Copy content width.
+      clone.style.width = textarea.clientWidth - pl - pr + "px";
+
+      // Copy text properties.
+      clone.style.font = cs.font;
+      clone.style.letterSpacing = cs.letterSpacing;
+      clone.style.whiteSpace = cs.whiteSpace;
+      clone.style.wordBreak = cs.wordBreak;
+      clone.style.wordSpacing = cs.wordSpacing;
+      clone.style.wordWrap = cs.wordWrap;
+
+      // Copy value.
+      clone.value = textarea.value;
+
+      let result = Math.floor(clone.scrollHeight / lh);
+      if (result == 0) result = 1;
+      textarea.parentNode.removeChild(clone);
+      return result;
+    }
+  });
+
+  // Insert emoji to the message
+  const emoji = document.querySelector(".message-emoji .tab-content");
+  emoji.addEventListener("click", (event) => {
+    if (messageText && event.target.classList.contains("emoji-icon")) {
+      const [start, end] = [
+        messageText.selectionStart,
+        messageText.selectionEnd,
+      ];
+      messageText.setRangeText(event.target.textContent, start, end, "select");
+      if (sendButton.disabled) sendButton.disabled = false;
+    }
+  });
+
+  // Enable/Disable Send button
+  messageText.addEventListener("input", (event) => {
+    if (sendButton.disabled && event.currentTarget.value !== "") {
+      sendButton.disabled = false;
+    } else if (event.currentTarget.value === "") {
+      sendButton.disabled = true;
+    }
+  });
+
+  // Handle sending new message
+  messageForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (messageText.value === "") return;
+    const message = {
+      id: Date.now(),
+      title: "Mary Sue",
+      text: encodeHTML(messageText.value),
+      is_outgoing: true,
+    };
+    chatMessages.appendChild(createMessage(message));
+    scrollDown(chatMessages);
+    resetForm();
+
+    // Return encoded (safe) text in html format
+    function encodeHTML(text) {
+      const encoded = text.replace(
+        /[\u00A0-\u9999<>\&]/g,
+        (i) => "&#" + i.charCodeAt(0) + ";"
+      );
+      return encoded.split(/\r?\n/).join("<br>");
+    }
+
+    // Reset form and resize message textarea
+    function resetForm() {
+      const grower = messageText.parentNode;
+      if (!grower.classList.contains("fixed")) {
+        grower.classList.add("fixed");
+      }
+      messageForm.reset();
+    }
+  });
+}
