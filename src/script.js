@@ -140,7 +140,7 @@ function handleRegistration(event) {
   function validateEmail(element) {
     try {
       //The email must be a valid email address.
-      if (!element.value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/)) {
+      if (!element.value.match(/^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/)) {
         throw new Error("The email must be a valid email address.");
       }
       //The email must not be from the domain "example.com"
@@ -373,16 +373,16 @@ function generateChat(username, email) {
 
 // Return chat object from localStorage
 function getChat(chatname) {
-    const chat = storage.getItem(chatname);
-    if(!chat) {
-        throw new Error("That chat does not exist.")
-    }
-    return JSON.parse(chat);
+  const chat = storage.getItem(chatname);
+  if (!chat) {
+    throw new Error("That chat does not exist.");
+  }
+  return JSON.parse(chat);
 }
 
 // Add new message to the chat in localStorage
 function addMessage(chatname, message) {
-    const chat = getChat(chatname);
-    chat.messages.push(message);
-    storage.setItem(chatname, JSON.stringify(chat));
+  const chat = getChat(chatname);
+  chat.messages.push(message);
+  storage.setItem(chatname, JSON.stringify(chat));
 }

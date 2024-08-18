@@ -21,9 +21,9 @@
                   <!-- Registration Form -->
                   <form id="registration">
                     <label for="name">Name:</label>
-                    <input name="name" type="text" />
+                    <input name="name" type="text" required />
                     <label for="email">E-mail:</label>
-                    <input name="email" type="text" />
+                    <input name="email" type="email" pattern="^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required />
                     <button type="submit">Start the chat</button>
                   </form>
                 </div>
