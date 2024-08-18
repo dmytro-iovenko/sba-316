@@ -63,6 +63,7 @@ const messages = [
   },
 ];
 
+const storage = window.localStorage;
 const chatContainer = document.querySelector(".chat-container");
 
 const createRegistrationForm = (parent = document) => {
@@ -79,12 +80,33 @@ const registrationForm = createRegistrationForm(chatContainer);
 registrationForm.addEventListener("submit", handleRegistration);
 
 function handleRegistration(event) {
-  // prevent default submit logic
+  // Prevent default submit logic
   event.preventDefault();
+  // Get Registration Form element
+  const registrationForm = event.target;
   try {
     // Perform Name Validation
-    const name = registrationForm.elements.name;
-    validateName(name);
+    const nameEl = registrationForm.elements.name;
+    validateName(nameEl);
+    // Perform Email Validation
+    const emailEl = registrationForm.elements.email;
+    validateEmail(emailEl);
+    /** Registration Form - Form Submission */
+    // Generate username from user's name
+    const username = nameEl.value.split(" ").join("_").toLowerCase();
+    // Convert email to all lowercase before being stored.
+    const email = emailEl.value.toLowerCase();
+    // If all validation is successful, store the username, email, and password using localStorage.
+    storage.setItem(
+      username,
+      JSON.stringify({
+        username: username,
+        name: nameEl.value,
+        email: email,
+      })
+    );
+    // Clear all form fields after successful submission
+    registrationForm.reset();
     console.log("OK");
   } catch (err) {
     displayError(err.message);
@@ -94,11 +116,11 @@ function handleRegistration(event) {
   // Registration Form - Username Validation:
   function validateName(element) {
     try {
-      //The username cannot be blank.
+      //The name cannot be blank.
       if (element.value === "") {
         throw new Error("The name cannot be blank.");
       }
-      //The username must be at least four characters long.
+      //The name must be at least four characters long.
       if (element.value.length < 4) {
         throw new Error("The name must be at least four characters long.");
       }
@@ -108,28 +130,38 @@ function handleRegistration(event) {
           "The name must contain at least two unique characters."
         );
       }
-      //The username cannot contain any special characters or whitespace.
-      if (element.value.match(/\W/)) {
-        throw new Error("The name cannot contain any special characters.");
+      //The name must not contain any special characters.
+      if (element.value.match(/[^A-Za-z ]/)) {
+        throw new Error("The name must not contain any special characters.");
+      }
+      //The name must not contain leading or trailing spaces.
+      if (element.value.match(/^\s|\s$/)) {
+        throw new Error(
+          "The name must not contain leading or trailing spaces."
+        );
       }
     } catch (err) {
       element.focus();
       throw new Error(err);
     }
   }
-
   // Registration Form - Email Validation:
-  function validateEmail(email) {
-    //The email must be a valid email address.
-    if (!email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/)) {
-      throw new Error("The email must be a valid email address.");
-    }
-    //The email must not be from the domain "example.com"
-    if (email.match(/example\.com$/i)) {
-      throw new Error('The email must not be from the domain "example.com"');
+  function validateEmail(element) {
+    try {
+      //The email must be a valid email address.
+      if (!element.value.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/)) {
+        throw new Error("The email must be a valid email address.");
+      }
+      //The email must not be from the domain "example.com"
+      if (element.value.match(/example\.com$/i)) {
+        throw new Error('The email must not be from the domain "example.com"');
+      }
+    } catch (err) {
+      element.focus();
+      throw new Error(err);
     }
   }
-
+  // Display error
   function displayError(error) {
     const errorDisplay = document.getElementById("error-display");
     errorDisplay.textContent = error;
@@ -138,7 +170,6 @@ function handleRegistration(event) {
       errorDisplay.style.display = "none";
     }, 2000);
   }
-  console.log("OK");
 }
 
 const chatMessages = document.getElementById("chat-messages");
