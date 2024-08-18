@@ -313,8 +313,8 @@ function startChat(chatname) {
       is_outgoing: true,
       timestamp: Date.now(),
     };
-    chatMessages.appendChild(createMessage(message));
     addMessage(chatname, message);
+    chatMessages.appendChild(createMessage(message));
     scrollDown(chatMessages);
     resetForm();
 
@@ -333,6 +333,7 @@ function startChat(chatname) {
       if (!grower.classList.contains("fixed")) {
         grower.classList.add("fixed");
       }
+      sendButton.disabled = true;
       messageForm.reset();
     }
   });
