@@ -281,16 +281,16 @@ function startChat(chatname) {
   });
 
   // Insert emoji to the message
-  const emoji = document.querySelector(".message-emoji .tab-content");
-  emoji.addEventListener("click", (event) => {
-    if (messageText && event.target.classList.contains("emoji-icon")) {
+  const emojiArr = document.querySelectorAll(".emoji-icon");
+  emojiArr.forEach((emojiItem) => {
+    emojiItem.addEventListener("click", (event) => {
       const [start, end] = [
         messageText.selectionStart,
         messageText.selectionEnd,
       ];
       messageText.setRangeText(event.target.textContent, start, end, "select");
       if (sendButton.disabled) sendButton.disabled = false;
-    }
+    });
   });
 
   // Enable/Disable Send button
