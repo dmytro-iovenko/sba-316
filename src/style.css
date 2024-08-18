@@ -2,12 +2,13 @@
   --primary: #227093;
   --secondary: lightblue;
   /* --secondary: #ff5252; */
-  --background: white;
+  --background: #eee;
+  --white: white;
   --highlight: #eee;
   --border: lightgrey;
   --text: black;
   --text-grey: grey;
-  --message-in: #eee;
+  --message-in: white;
   --message-out: lightblue;
 }
 
@@ -47,6 +48,7 @@ main {
   position: relative;
   display: flex;
   width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -62,6 +64,7 @@ main {
   font-size: 1.2rem;
   font-weight: bold;
   padding: 1rem;
+  background-color: var(--white);
   border-bottom: 1px solid var(--border);
   display: flex;
 }
@@ -213,11 +216,11 @@ main {
 }
 
 .container-footer {
+  background-color: var(--white);
   .message-area {
     position: relative;
     width: 100%;
     height: 100%;
-    background-color: var(--background);
     display: flex;
     align-items: end;
     gap: 0.5rem;
@@ -232,7 +235,7 @@ main {
     .grow-wrap:has(.message-area-text:focus) {
       box-shadow: 0 0 10px var(--border);
     }
-    .message-area-btn:hover:enabled {
+    .message-area-btn:hover:not([disabled]) {
       /* fill: var(--primary); */
       /* filter: drop-shadow( 0 0 0.25rem var(--border)); */
       background-color: var(--highlight);
@@ -245,7 +248,7 @@ main {
       cursor: pointer;
     }
     .message-area-btn {
-      background-color: var(--background);
+      background-color: var(--white);
       border: none;
       border-radius: 0.5rem;
       height: 2.5rem;
@@ -317,7 +320,7 @@ main {
             cursor: pointer;
           }
           .emoji-icon:hover {
-            background-color: var(--highlight);
+            background-color: var(--border);
           }
         }
       }
