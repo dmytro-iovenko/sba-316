@@ -157,7 +157,7 @@ function handleRegistration(event) {
     const errorDisplay = document.getElementById("error-display");
     errorDisplay.textContent = error;
     errorDisplay.style.display = "block";
-    setTimeout(() => {
+    window.setTimeout(() => {
       errorDisplay.style.display = "none";
     }, 2000);
   }
@@ -307,10 +307,11 @@ function startChat(chatname) {
     event.preventDefault();
     if (messageText.value === "") return;
     const message = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       title: username,
       text: encodeHTML(messageText.value),
       is_outgoing: true,
+      timestamp: Date.now(),
     };
     chatMessages.appendChild(createMessage(message));
     addMessage(chatname, message);
@@ -353,10 +354,11 @@ function generateChat(username, email) {
     email = email.toLowerCase();
     // Generate first (welcome) message
     const welcomeMessage = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       title: agentname,
       text: `Hello ${username}. How may I help you?`,
       is_outgoing: false,
+      timestamp: Date.now(),
     };
     storage.setItem(
       chatname,
