@@ -79,6 +79,65 @@ const registrationForm = createRegistrationForm(chatContainer);
 registrationForm.addEventListener("submit", handleRegistration);
 
 function handleRegistration(event) {
+  // prevent default submit logic
+  event.preventDefault();
+  try {
+    // Perform Name Validation
+    const name = registrationForm.elements.name;
+    validateName(name);
+    console.log("OK");
+  } catch (err) {
+    displayError(err.message);
+    console.log(err);
+  }
+
+  // Registration Form - Username Validation:
+  function validateName(element) {
+    try {
+      //The username cannot be blank.
+      if (element.value === "") {
+        throw new Error("The name cannot be blank.");
+      }
+      //The username must be at least four characters long.
+      if (element.value.length < 4) {
+        throw new Error("The name must be at least four characters long.");
+      }
+      //The username must contain at least two unique characters.
+      if (element.value.match(/^(.)\1+$/)) {
+        throw new Error(
+          "The name must contain at least two unique characters."
+        );
+      }
+      //The username cannot contain any special characters or whitespace.
+      if (element.value.match(/\W/)) {
+        throw new Error("The name cannot contain any special characters.");
+      }
+    } catch (err) {
+      element.focus();
+      throw new Error(err);
+    }
+  }
+
+  // Registration Form - Email Validation:
+  function validateEmail(email) {
+    //The email must be a valid email address.
+    if (!email.match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,})+$/)) {
+      throw new Error("The email must be a valid email address.");
+    }
+    //The email must not be from the domain "example.com"
+    if (email.match(/example\.com$/i)) {
+      throw new Error('The email must not be from the domain "example.com"');
+    }
+  }
+
+  function displayError(error) {
+    const errorDisplay = document.getElementById("error-display");
+    errorDisplay.textContent = error;
+    errorDisplay.style.display = "block";
+    setTimeout(() => {
+      errorDisplay.style.display = "none";
+    }, 2000);
+  }
   console.log("OK");
 }
 
