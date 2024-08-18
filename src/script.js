@@ -64,6 +64,7 @@ const messages = [
 ];
 
 const chatMessages = document.getElementById("chat-messages");
+const messageForm = document.getElementById("message-form");
 const messageText = document.getElementById("message-text");
 const sendButton = document.getElementById("send-btn");
 
@@ -89,7 +90,7 @@ const createMessage = (message = {}) => {
   if (message.text) {
     const text = content.appendChild(document.createElement("div"));
     text.classList.add("chat-message-text");
-    text.textContent = message.text;
+    text.innerHTML = message.text;
   }
   return frag;
 };
@@ -180,4 +181,19 @@ messageText.addEventListener("input", (event) => {
   } else if (event.currentTarget.value === "") {
     sendButton.disabled = true;
   }
+});
+
+// Handle sending new message
+messageForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  if (messageText.value === "") return;
+  const message = {
+    id: Date.now(),
+    title: "Mary Sue",
+    text: messageText.value,
+    is_outgoing: true,
+  };
+  chatMessages.appendChild(createMessage(message));
+  messageForm.reset();
+  scrollDown(chatMessages);
 });
