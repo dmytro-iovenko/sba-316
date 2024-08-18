@@ -103,6 +103,61 @@ const scrollDown = (content) => {
     content.scrollTop = content.scrollHeight;
   }
 };
-
 // Scroll Chat Messages down
 scrollDown(chatMessages);
+
+// Set up message textarea to grow automatically
+const grower = document.querySelector(".grow-wrap");
+const textarea = grower.querySelector("textarea");
+textarea.addEventListener("input", () => {
+  grower.dataset.replicatedValue = textarea.value;
+  if (countLines(textarea) > 1) {
+    grower.classList.remove("fixed");
+  } else if (!grower.classList.contains("fixed")) {
+    grower.classList.add("fixed");
+  }
+  // https://stackoverflow.com/a/45252226
+  // Function to returns the number of lines in a textarea,
+  // including wrapped lines.
+  function countLines(textarea) {
+    let clone = textarea.cloneNode();
+    clone.style.border = "none";
+    clone.style.height = "0";
+    clone.style.overflow = "hidden";
+    clone.style.padding = "0";
+    clone.style.position = "absolute";
+    clone.style.left = "0";
+    clone.style.top = "0";
+    clone.style.zIndex = "-1";
+    clone.style.visibility = "hidden";
+
+    textarea.parentNode.appendChild(clone);
+
+    let cs = window.getComputedStyle(textarea);
+    let pl = parseInt(cs.paddingLeft);
+    let pr = parseInt(cs.paddingRight);
+    let lh = parseInt(cs.lineHeight);
+
+    // [cs.lineHeight] may return 'normal', which means line height = font size.
+    if (isNaN(lh)) lh = parseInt(cs.fontSize);
+
+    // Copy content width.
+    clone.style.width = textarea.clientWidth - pl - pr + "px";
+
+    // Copy text properties.
+    clone.style.font = cs.font;
+    clone.style.letterSpacing = cs.letterSpacing;
+    clone.style.whiteSpace = cs.whiteSpace;
+    clone.style.wordBreak = cs.wordBreak;
+    clone.style.wordSpacing = cs.wordSpacing;
+    clone.style.wordWrap = cs.wordWrap;
+
+    // Copy value.
+    clone.value = textarea.value;
+
+    let result = Math.floor(clone.scrollHeight / lh);
+    if (result == 0) result = 1;
+    textarea.parentNode.removeChild(clone);
+    return result;
+  }
+});
