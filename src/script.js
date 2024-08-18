@@ -1,3 +1,5 @@
+const agentname = "John Doe";
+
 const messages = [
   {
     id: 1,
@@ -65,6 +67,8 @@ const messages = [
 
 const storage = window.localStorage;
 const chatContainer = document.querySelector(".chat-container");
+const chatTitle = document.querySelector(".chat-title");
+chatTitle.textContent = agentname;
 
 // Create Registration Form using HTML template
 const registrationContainer = createContainer("registration-template");
@@ -81,31 +85,19 @@ function handleRegistration(event) {
   const registrationForm = event.target;
   try {
     // Perform Name Validation
-    const nameEl = registrationForm.elements.name;
-    validateName(nameEl);
+    const name = registrationForm.elements.name;
+    validateName(name);
     // Perform Email Validation
-    const emailEl = registrationForm.elements.email;
-    validateEmail(emailEl);
+    const email = registrationForm.elements.email;
+    validateEmail(email);
     /** Registration Form - Form Submission */
-    // Generate username from user's name
-    const username = nameEl.value.split(" ").join("_").toLowerCase();
-    // Convert email to all lowercase before being stored.
-    const email = emailEl.value.toLowerCase();
-    // If all validation is successful, store the username, email, and password using localStorage.
-    storage.setItem(
-      username,
-      JSON.stringify({
-        username: username,
-        name: nameEl.value,
-        email: email,
-      })
-    );
+    const chatname = generateChat(name.value, email.value);
     // Clear all form fields after successful submission
     registrationForm.reset();
     // Remove Registration Form
     chatContainer.removeChild(registrationContainer);
     // Start Chat
-    startChat(username);
+    startChat(chatname);
     console.log("OK");
   } catch (err) {
     displayError(err.message);
@@ -171,13 +163,14 @@ function handleRegistration(event) {
   }
 }
 
-function startChat(name) {
-  const chat = storage.getItem(name.toLowerCase());
-  // The chat must exist (within localStorage)
-  if (!chat) {
-    throw new Error("That chat does not exist.");
-  }
-
+function startChat(chatname) {
+  // Get chat object
+  const chat = getChat(chatname);
+  console.log(chat);
+  const messages = chat.messages;
+  const username = chat.username;
+  const email = chat.email;
+  // Create Chat Messages Container
   const chatMessages = document.createElement("div");
   chatMessages.classList.add("chat-messages");
   chatContainer.appendChild(chatMessages);
@@ -195,13 +188,13 @@ function startChat(name) {
   const createMessage = (message = {}) => {
     // Creating a DocumentFragment
     const frag = document.createDocumentFragment();
-    const chat = frag.appendChild(document.createElement("div"));
-    chat.classList.add("chat-message");
-    chat.classList.add(message.is_outgoing ? "message-out" : "message-in");
-    const title = chat.appendChild(document.createElement("div"));
+    const element = frag.appendChild(document.createElement("div"));
+    element.classList.add("chat-message");
+    element.classList.add(message.is_outgoing ? "message-out" : "message-in");
+    const title = element.appendChild(document.createElement("div"));
     title.classList.add("chat-message-title");
     title.textContent = message.title;
-    const content = chat.appendChild(document.createElement("div"));
+    const content = element.appendChild(document.createElement("div"));
     content.classList.add("chat-message-content");
     if (message.image) {
       const image = content.appendChild(document.createElement("div"));
@@ -220,7 +213,7 @@ function startChat(name) {
 
   // Loop through chat messages to display them
   messages.forEach((message) => {
-    // chatMessages.appendChild(createMessage(message));
+    chatMessages.appendChild(createMessage(message));
   });
 
   // A function to scroll content down
@@ -315,11 +308,12 @@ function startChat(name) {
     if (messageText.value === "") return;
     const message = {
       id: Date.now(),
-      title: "Mary Sue",
+      title: username,
       text: encodeHTML(messageText.value),
       is_outgoing: true,
     };
     chatMessages.appendChild(createMessage(message));
+    addMessage(chatname, message);
     scrollDown(chatMessages);
     resetForm();
 
@@ -348,4 +342,47 @@ function createContainer(name) {
   // Using an HTML template clone
   const template = document.getElementById(name);
   return template.content.firstElementChild.cloneNode(true);
+}
+
+// Return name of existing chat, if any, or create a new chat
+function generateChat(username, email) {
+  // Generate chatname from user's name
+  const chatname = username.split(" ").join("_").toLowerCase();
+  if (!storage.getItem(chatname)) {
+    // Convert email to all lowercase before being stored.
+    email = email.toLowerCase();
+    // Generate first (welcome) message
+    const welcomeMessage = {
+      id: Date.now(),
+      title: agentname,
+      text: `Hello ${username}. How may I help you?`,
+      is_outgoing: false,
+    };
+    storage.setItem(
+      chatname,
+      JSON.stringify({
+        agentname,
+        username,
+        email,
+        messages: [welcomeMessage],
+      })
+    );
+  }
+  return chatname;
+}
+
+// Return chat object from localStorage
+function getChat(chatname) {
+    const chat = storage.getItem(chatname);
+    if(!chat) {
+        throw new Error("That chat does not exist.")
+    }
+    return JSON.parse(chat);
+}
+
+// Add new message to the chat in localStorage
+function addMessage(chatname, message) {
+    const chat = getChat(chatname);
+    chat.messages.push(message);
+    storage.setItem(chatname, JSON.stringify(chat));
 }
