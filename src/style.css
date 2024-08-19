@@ -127,6 +127,7 @@ main {
   display: flex;
   flex-direction: column;
   box-shadow: 5px 5px 10px var(--border);
+  animation: message-scale-out 0.1s ease-out;
   .chat-message-title {
     display: none;
     font-size: 0.85rem;
@@ -158,6 +159,7 @@ main {
 .message-in {
   align-self: flex-start;
   margin-right: 5rem;
+  transform-origin: bottom left;
   .chat-message-title {
     margin-left: 2.75rem;
     display: none;
@@ -204,6 +206,7 @@ main {
 .message-out {
   align-self: flex-end;
   margin-left: 5rem;
+  transform-origin: bottom right;
   .chat-message-title {
     margin-right: 2.75rem;
     text-align: end;
@@ -477,12 +480,6 @@ main {
   display: none;
 }
 
-@keyframes slide-in-bottom {
-  from {
-    transform: translateY(100%);
-  }
-}
-
 .hamburger-menu {
   position: relative;
   width: 1.6rem;
@@ -604,4 +601,19 @@ main {
 }
 .menu-item:hover {
   background-color: var(--highlight);
+}
+
+@keyframes slide-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes message-scale-out {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
