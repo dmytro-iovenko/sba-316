@@ -11,6 +11,19 @@
       <section class="container">
         <div class="container-title">
           <div class="chat-title">Tina Cornell</div>
+          <div class="hamburger-menu">
+            <input id="menu-toggle" type="checkbox" />
+            <label class="menu-btn" for="menu-toggle">
+              <span>&nbsp;</span>
+              <div class="modal fade"></div>
+            </label>
+            <ul class="menu-box">
+              <li><a class="menu-item" href="#">Test menu #1</a></li>
+              <li><a class="menu-item" href="#">Test menu #2</a></li>
+              <li><a class="menu-item" href="#">Test menu #3</a></li>
+              <li><a class="menu-item" href="#">Test menu #4</a></li>
+            </ul>
+          </div>
         </div>
         <div class="container-body">
           <div class="chat-container">
@@ -23,7 +36,12 @@
                     <label for="name">Name:</label>
                     <input name="name" type="text" required />
                     <label for="email">E-mail:</label>
-                    <input name="email" type="email" pattern="^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required />
+                    <input
+                      name="email"
+                      type="email"
+                      pattern="^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$"
+                      required
+                    />
                     <button type="submit">Start the chat</button>
                   </form>
                 </div>
