@@ -501,16 +501,18 @@ main {
 }
 #menu-toggle:checked + .menu-btn > span {
   background-color: transparent;
+  top:-0.2rem;
+  height: 1.8rem;
 }
 #menu-toggle:checked + .menu-btn > span::before {
-  top: 0.1rem;
+  top: 0.8rem;
   transform: rotate(135deg);
 }
 #menu-toggle:checked + .menu-btn > span::after {
-  top: 0.1rem;
+  top: 0.8rem;
   transform: rotate(-135deg);
 }
-#menu-toggle:checked + .menu-btn .modal {
+#menu-toggle:checked + .menu-btn .overlay {
   display: block;
 }
 #menu-toggle:checked ~ .menu-box {
@@ -546,13 +548,13 @@ main {
   background-color: var(--button);
   display: inline-block;
   z-index: 3;
+  transition: transform 0.2s;
 }
 .menu-btn > span::before,
 .menu-btn > span::after {
   content: "";
   position: absolute;
   left: 0;
-  transition: all 0.2s;
 }
 .menu-btn > span::before {
   top: -0.5rem;
@@ -560,7 +562,7 @@ main {
 .menu-btn > span::after {
   top: 0.5rem;
 }
-.menu-btn .modal {
+.menu-btn .overlay {
   display: none;
   position: fixed;
   top: 0;
@@ -573,8 +575,6 @@ main {
   outline: 0;
   cursor: default;
   z-index: 1;
-}
-.menu-btn .fade {
   opacity: 0.4;
   transition: opacity 0.25s linear;
 }
