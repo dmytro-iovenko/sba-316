@@ -485,7 +485,7 @@ main {
 
 .hamburger-menu {
   position: relative;
-  width: 2rem;
+  width: 1.8rem;
 }
 
 #menu-toggle {
@@ -513,7 +513,6 @@ main {
 #menu-toggle:checked + .menu-btn .modal {
   display: block;
 }
-
 #menu-toggle:checked ~ .menu-box {
   right: 0 !important;
 }
@@ -522,6 +521,16 @@ main {
   height: 100%;
   cursor: pointer;
   user-select: none;
+  outline: none;
+}
+.menu-btn:hover {
+  background-color: var(--bs-light);
+  outline: 0.5rem solid var(--bs-light);
+  transition: outline-width 0.25s;
+  border-radius: 50%;
+}
+#menu-toggle:checked + .menu-btn {
+  outline-width: 1rem;
 }
 .menu-btn > span {
   position: relative;
@@ -536,7 +545,7 @@ main {
   border-radius: 50%;
   background-color: var(--button);
   display: inline-block;
-  z-index: 101;
+  z-index: 3;
 }
 .menu-btn > span::before,
 .menu-btn > span::after {
@@ -562,7 +571,8 @@ main {
   overflow-x: hidden;
   overflow-y: auto;
   outline: 0;
-  z-index: 99;
+  cursor: default;
+  z-index: 1;
 }
 .menu-btn .fade {
   opacity: 0.4;
@@ -581,7 +591,7 @@ main {
   background-color: var(--white);
   box-shadow: 2px 2px 6px var(--button);
   transition-duration: 0.25s;
-  z-index: 100;
+  z-index: 2;
 }
 .menu-item {
   display: block;
