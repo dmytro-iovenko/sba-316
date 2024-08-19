@@ -485,7 +485,8 @@ main {
 
 .hamburger-menu {
   position: relative;
-  width: 1.8rem;
+  width: 1.6rem;
+  height: 1.6rem;
 }
 
 #menu-toggle {
@@ -500,16 +501,16 @@ main {
   margin: 0;
 }
 #menu-toggle:checked + .menu-btn > span {
+  top: 0;
   background-color: transparent;
-  top:-0.2rem;
-  height: 1.8rem;
+  height: 1.6rem;
 }
 #menu-toggle:checked + .menu-btn > span::before {
-  top: 0.8rem;
+  top: 50%;
   transform: rotate(135deg);
 }
 #menu-toggle:checked + .menu-btn > span::after {
-  top: 0.8rem;
+  top: 50%;
   transform: rotate(-135deg);
 }
 #menu-toggle:checked + .menu-btn .overlay {
@@ -589,7 +590,6 @@ main {
   padding: 3rem 0;
   list-style: none;
   background-color: var(--white);
-  box-shadow: 2px 2px 6px var(--button);
   transition-duration: 0.25s;
   z-index: 2;
 }
