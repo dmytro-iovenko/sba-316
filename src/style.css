@@ -549,7 +549,7 @@ main {
   background-color: var(--button);
   display: inline-block;
   z-index: 3;
-  transition: transform 0.2s;
+  transition: all 0.2s;
 }
 .menu-btn > span::before,
 .menu-btn > span::after {
