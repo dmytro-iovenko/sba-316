@@ -101,55 +101,52 @@ function handleRegistration(event) {
     console.log("OK");
   } catch (err) {
     displayError(err.message);
+    if (err.cause && err.cause.focus) err.cause.focus();
     console.log(err);
   }
 
   // Registration Form - Username Validation:
   function validateName(element) {
-    try {
-      //The name cannot be blank.
-      if (element.value === "") {
-        throw new Error("The name cannot be blank.");
-      }
-      //The name must be at least four characters long.
-      if (element.value.length < 4) {
-        throw new Error("The name must be at least four characters long.");
-      }
-      //The username must contain at least two unique characters.
-      if (element.value.match(/^(.)\1+$/)) {
-        throw new Error(
-          "The name must contain at least two unique characters."
-        );
-      }
-      //The name must not contain any special characters.
-      if (element.value.match(/[^A-Za-z ]/)) {
-        throw new Error("The name must not contain any special characters.");
-      }
-      //The name must not contain leading or trailing spaces.
-      if (element.value.match(/^\s|\s$/)) {
-        throw new Error(
-          "The name must not contain leading or trailing spaces."
-        );
-      }
-    } catch (err) {
-      element.focus();
-      throw new Error(err);
+    //The name cannot be blank.
+    if (element.value === "") {
+      throw new Error("The name cannot be blank.", { cause: element });
+    }
+    //The name must be at least four characters long.
+    if (element.value.length < 4) {
+      throw new Error("The name must be at least four characters long.", {
+        cause: element,
+      });
+    }
+    //The username must contain at least two unique characters.
+    if (element.value.match(/^(.)\1+$/)) {
+      throw new Error("The name must contain at least two unique characters.", {
+        cause: element,
+      });
+    }
+    //The name must not contain any special characters.
+    if (element.value.match(/[^A-Za-z ]/)) {
+      throw new Error("The name must not contain any special characters.", {
+        cause: element,
+      });
+    }
+    //The name must not contain leading or trailing spaces.
+    if (element.value.match(/^\s|\s$/)) {
+      throw new Error("The name must not contain leading or trailing spaces.");
     }
   }
   // Registration Form - Email Validation:
   function validateEmail(element) {
-    try {
-      //The email must be a valid email address.
-      if (!element.value.match(/^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/)) {
-        throw new Error("The email must be a valid email address.");
-      }
-      //The email must not be from the domain "example.com"
-      if (element.value.match(/example\.com$/i)) {
-        throw new Error('The email must not be from the domain "example.com"');
-      }
-    } catch (err) {
-      element.focus();
-      throw new Error(err);
+    //The email must be a valid email address.
+    if (!element.value.match(/^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$/)) {
+      throw new Error("The email must be a valid email address.", {
+        cause: element,
+      });
+    }
+    //The email must not be from the domain "example.com"
+    if (element.value.match(/example\.com$/i)) {
+      throw new Error('The email must not be from the domain "example.com"', {
+        cause: element,
+      });
     }
   }
   // Display error
