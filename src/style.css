@@ -526,7 +526,7 @@ main {
   display: none;
 }
 
-.hamburger-menu {
+.top-menu {
   position: relative;
   width: 1.6rem;
   height: 1.6rem;
@@ -568,6 +568,9 @@ main {
   cursor: pointer;
   user-select: none;
   outline: none;
+}
+svg.menu-btn {
+  fill: var(--button);
 }
 .menu-btn:hover {
   background-color: var(--bs-light);
