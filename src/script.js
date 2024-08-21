@@ -1,4 +1,7 @@
-const agentname = "John Doe";
+const agent = {
+  name: "John Doe",
+  position: "IT Consultant",
+};
 
 const messages = [
   {
@@ -68,7 +71,54 @@ const messages = [
 const storage = window.localStorage;
 const chatContainer = document.querySelector(".chat-container");
 const chatTitle = document.querySelector(".chat-title");
-chatTitle.textContent = agentname;
+chatTitle.textContent = agent.name;
+
+// Create Start Chat Form using HTML template
+const startChatContainer = createContainer("start-chat-template");
+chatContainer.append(startChatContainer);
+
+// A builder function to create a chat item
+const createChatItem = (agent = {}) => {
+  // Creating a DocumentFragment
+  const frag = document.createDocumentFragment();
+  const item = frag.appendChild(document.createElement("div"));
+  item.classList.add("chat-item");
+  const wrapper = item.appendChild(document.createElement("div"));
+  wrapper.classList.add("chat-item-wrapper");
+  const status = wrapper.appendChild(document.createElement("div"));
+  status.classList.add("chat-item-status");
+  const avatar = wrapper.appendChild(document.createElement("div"));
+  avatar.classList.add("chat-item-avatar");
+  avatar.classList.add(getColorClass(agent.name));
+  avatar.textContent = getInitials(agent.name);
+  const content = item.appendChild(document.createElement("div"));
+  content.classList.add("chat-item-content");
+  const title = content.appendChild(document.createElement("div"));
+  title.classList.add("chat-item-title");
+  title.textContent = agent.name;
+  const text = content.appendChild(document.createElement("div"));
+  text.classList.add("chat-item-text");
+  text.textContent = agent.position;
+  return frag;
+
+  function getInitials(name) {
+    return name
+      .split(" ")
+      .map((e) => e[0].toUpperCase())
+      .join("")
+      .slice(0, 2);
+  }
+
+  function getColorClass(name) {
+    let initials = getInitials(name);
+    let i = initials.split("").reduce((sum, e) => sum + e.charCodeAt(0), 0) % 10;
+    return "avatar-" + i;
+  }
+};
+
+const startChatForm = startChatContainer.querySelector("#start-chat");
+console.log(startChatForm);
+startChatForm.prepend(createChatItem(agent));
 
 // Create Registration Form using HTML template
 const registrationContainer = createContainer("registration-template");
