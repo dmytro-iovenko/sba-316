@@ -71,7 +71,7 @@ const messages = [
 const storage = window.localStorage;
 const chatContainer = document.querySelector(".chat-container");
 const chatTitle = document.querySelector(".chat-title");
-chatTitle.textContent = agent.name;
+chatTitle.textContent = "Welcome to LiveChat";
 
 // Create Start Chat Form using HTML template
 const startChatContainer = createContainer("start-chat-template");
@@ -111,7 +111,8 @@ const createChatItem = (agent = {}) => {
 
   function getColorClass(name) {
     let initials = getInitials(name);
-    let i = initials.split("").reduce((sum, e) => sum + e.charCodeAt(0), 0) % 10;
+    let i =
+      initials.split("").reduce((sum, e) => sum + e.charCodeAt(0), 0) % 10;
     return "avatar-" + i;
   }
 };
@@ -120,13 +121,21 @@ const startChatForm = startChatContainer.querySelector("#start-chat");
 console.log(startChatForm);
 startChatForm.prepend(createChatItem(agent));
 
-// Create Registration Form using HTML template
-const registrationContainer = createContainer("registration-template");
-chatContainer.append(registrationContainer);
-
 // Handle Registration Form submission
-const registrationForm = document.getElementById("registration");
-registrationForm.addEventListener("submit", handleRegistration);
+startChatForm.addEventListener("submit", handleStartChat);
+
+function handleStartChat(event) {
+  // Prevent default submit logic
+  event.preventDefault();
+  // Remove Start Chat Form
+  chatContainer.removeChild(startChatContainer);
+  // Create Registration Form using HTML template
+  const registrationContainer = createContainer("registration-template");
+  chatContainer.append(registrationContainer);
+  // Handle Registration Form submission
+  const registrationForm = document.getElementById("registration");
+  registrationForm.addEventListener("submit", handleRegistration);
+}
 
 function handleRegistration(event) {
   // Prevent default submit logic
