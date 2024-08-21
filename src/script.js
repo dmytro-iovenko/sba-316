@@ -75,6 +75,10 @@ chatTitle.textContent = "Welcome to LiveChat";
 
 // Create Start Chat Form using HTML template
 const startChatContainer = createContainer("start-chat-template");
+// Create Registration Form using HTML template
+const registrationContainer = createContainer("registration-template");
+
+// Render Start Chat Form
 chatContainer.append(startChatContainer);
 
 // A builder function to create a chat item
@@ -118,7 +122,6 @@ const createChatItem = (agent = {}) => {
 };
 
 const startChatForm = startChatContainer.querySelector("#start-chat");
-console.log(startChatForm);
 startChatForm.prepend(createChatItem(agent));
 
 // Handle Registration Form submission
@@ -129,8 +132,7 @@ function handleStartChat(event) {
   event.preventDefault();
   // Remove Start Chat Form
   chatContainer.removeChild(startChatContainer);
-  // Create Registration Form using HTML template
-  const registrationContainer = createContainer("registration-template");
+  // Add Registration Form
   chatContainer.append(registrationContainer);
   // Handle Registration Form submission
   const registrationForm = document.getElementById("registration");
